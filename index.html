@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fleetch CI — Dashboard Agents</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F4F5F7; min-height: 100vh; }
+
+.fleetch-header {
+  background: #1847D1;
+  padding: 16px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 10;
+}
+.fleetch-logo {
+  font-size: 28px; font-weight: 900; color: white;
+  letter-spacing: -1px; text-transform: uppercase;
+  -webkit-text-stroke: 2px #000; paint-order: stroke fill;
+}
+.fleetch-tagline { font-size: 10px; color: rgba(255,255,255,0.7); text-align: right; line-height: 1.5; }
+
+.content { max-width: 680px; margin: 0 auto; padding: 16px 16px 40px; }
+
+.month-pill {
+  display: inline-block; background: #1847D1; color: white;
+  font-size: 12px; font-weight: 500; padding: 5px 14px;
+  border-radius: 20px; margin-bottom: 16px;
+}
+
+.section-label {
+  font-size: 11px; font-weight: 600; color: #888;
+  text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px;
+}
+
+.card { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+
+.loading-state { text-align: center; padding: 3rem; color: #888; font-size: 14px; }
+.error-box { background: #FFF0EE; border: 1px solid #FFCEC8; border-radius: 10px; padding: 14px 16px; font-size: 13px; color: #993C1D; line-height: 1.6; margin-bottom: 12px; }
+
+/* Agent grid */
+.agent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 10px; margin-bottom: 16px; }
+.agent-card {
+  background: white; border-radius: 12px; padding: 16px 12px;
+  cursor: pointer; text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  transition: box-shadow 0.15s, transform 0.1s;
+  border: 2px solid transparent;
+}
+.agent-card:hover { box-shadow: 0 4px 12px rgba(24,71,209,0.15); border-color: #1847D1; transform: translateY(-1px); }
+.agent-av {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: #E8EEFA; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 600; color: #1847D1; margin: 0 auto 10px;
+}
+.agent-card-name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+.agent-card-total { font-size: 13px; color: #1847D1; font-weight: 500; margin-top: 3px; }
+.agent-card-count { font-size: 11px; color: #888; margin-top: 2px; }
+
+.divider { border: none; border-top: 1px solid #F0F0F0; margin: 16px 0; }
+
+/* Offer tiles */
+.offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.offer-tile { background: #F8F9FB; border-radius: 8px; padding: 10px 12px; }
+.offer-tile.blue { background: #E8EEFA; }
+.offer-tile.full { grid-column: 1/-1; }
+.offer-label { font-size: 10px; color: #888; margin-bottom: 3px; }
+.offer-val { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.offer-tile.blue .offer-val { color: #1847D1; }
+
+/* Variable table */
+.var-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.var-table tr { border-bottom: 1px solid #F0F0F0; }
+.var-table tr:last-child { border-bottom: none; }
+.var-table td { padding: 8px 4px; }
+.var-table td:first-child { color: #555; }
+.var-table td:last-child { text-align: right; font-weight: 600; color: #1847D1; }
+
+/* Agent screen */
+#agent-screen { display: none; }
+
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: white; border: 1px solid #E0E0E0;
+  border-radius: 8px; padding: 7px 14px;
+  font-size: 13px; cursor: pointer; color: #555;
+  margin-bottom: 14px; font-family: inherit;
+  transition: border-color 0.15s, color 0.15s;
+}
+.back-btn:hover { border-color: #1847D1; color: #1847D1; }
+
+.agent-title { font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 2px; }
+.agent-subtitle { font-size: 13px; color: #888; margin-bottom: 14px; }
+
+.total-bar {
+  background: #1847D1; border-radius: 12px;
+  padding: 14px 18px; display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.total-bar-label { font-size: 13px; color: rgba(255,255,255,0.75); }
+.total-bar-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.total-bar-val { font-size: 26px; font-weight: 800; color: white; }
+
+/* Driver cards */
+.drivers-list { display: flex; flex-direction: column; gap: 10px; }
+.dcard { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+
+.dcard-top { display: flex; justify-content: space-between; align-items: flex-start; padding: 12px 14px 10px; }
+.dname-row { display: flex; align-items: center; gap: 10px; }
+.dav { width: 34px; height: 34px; border-radius: 50%; background: #E8EEFA; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #1847D1; flex-shrink: 0; }
+.dname { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+.dphone { font-size: 11px; color: #888; margin-top: 1px; }
+.inactif-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #FFF0EE; color: #993C1D; margin-left: 6px; font-weight: 500; }
+
+.todo-pill { font-size: 11px; padding: 4px 9px; border-radius: 20px; font-weight: 500; white-space: nowrap; }
+.todo-action { background: #FFF4E0; color: #854F0B; }
+.todo-ok { background: #E6F7F0; color: #085041; }
+
+.dstats { display: grid; grid-template-columns: repeat(3,1fr); border-top: 1px solid #F0F0F0; }
+.dstat { padding: 8px 10px; text-align: center; border-right: 1px solid #F0F0F0; }
+.dstat:last-child { border-right: none; }
+.dstat-l { font-size: 10px; color: #888; margin-bottom: 2px; }
+.dstat-v { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+.dstat-v.warn { color: #D85A30; }
+.dstat-v.good { color: #0F6E56; }
+
+.week-strip { background: #FFFBF0; border-top: 1px solid #FAC775; padding: 9px 14px; }
+.week-title { font-size: 11px; color: #854F0B; font-weight: 600; margin-bottom: 5px; }
+.week-items { display: flex; gap: 20px; flex-wrap: wrap; }
+.week-item { font-size: 12px; color: #633806; }
+.week-item strong { font-weight: 600; }
+
+.bonus-strip { display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid #F0F0F0; }
+.bcell { padding: 8px 8px; text-align: center; border-right: 1px solid #F0F0F0; }
+.bcell:last-child { border-right: none; }
+.bcell-l { font-size: 9px; color: #888; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+.bcell-v { font-size: 13px; font-weight: 600; }
+.bcell-v.on { color: #1847D1; }
+.bcell-v.off { color: #CCC; }
+
+.refresh-row { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+.refresh-btn {
+  background: white; border: 1px solid #E0E0E0; border-radius: 8px;
+  padding: 6px 12px; font-size: 12px; cursor: pointer; color: #555; font-family: inherit;
+}
+.refresh-btn:hover { border-color: #1847D1; color: #1847D1; }
+
+.empty-msg { text-align: center; padding: 2.5rem; color: #888; font-size: 14px; }
+
+@media (max-width: 480px) {
+  .offer-grid { grid-template-columns: 1fr; }
+  .offer-tile.full { grid-column: 1; }
+  .bonus-strip { grid-template-columns: repeat(2,1fr); }
+  .bcell:nth-child(2) { border-right: none; }
+  .bcell:nth-child(3) { border-top: 1px solid #F0F0F0; }
+  .bcell:nth-child(4) { border-top: 1px solid #F0F0F0; }
+}
+</style>
+</head>
+<body>
+
+<div class="fleetch-header">
+  <div class="fleetch-logo">FLEETCH!</div>
+  <div class="fleetch-tagline">Meilleure flotte de VTC<br>en Côte d'Ivoire</div>
+</div>
+
+<div class="content">
+  <div id="home-screen">
+    <div id="home-body"><div class="loading-state">Chargement des données…</div></div>
+  </div>
+  <div id="agent-screen">
+    <button class="back-btn" id="back-btn">← Retour</button>
+    <div id="agent-title" class="agent-title"></div>
+    <div id="agent-subtitle" class="agent-subtitle"></div>
+    <div class="total-bar">
+      <div>
+        <div class="total-bar-label">Variable total gagné</div>
+        <div id="total-sub" class="total-bar-sub"></div>
+      </div>
+      <div id="total-val" class="total-bar-val">—</div>
+    </div>
+    <div id="drivers-list" class="drivers-list"></div>
+  </div>
+</div>
+
+<script>
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQAAWDvf1mtml-i0tTIkwJEwI4m6cxSInXYJDd_9U-hpGaDYXKvzWpMzb6lJ9Xh0NJ7aDvIu8Pk2Ub0/pub?gid=0&single=true&output=csv';
+
+let sheetData = [], agents = [], currentMonth = '';
+
+function getInitials(n) {
+  if (!n) return '?';
+  const p = n.trim().split(/\s+/);
+  return p.length >= 2 ? (p[0][0]+p[1][0]).toUpperCase() : n.slice(0,2).toUpperCase();
+}
+function fmtF(v) {
+  const n = parseFloat(String(v).replace(',','.')) || 0;
+  if (n === 0) return '0 F';
+  return Math.round(n).toLocaleString('fr-FR') + ' F';
+}
+function parseCSVLine(line) {
+  const result = []; let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur);
+  return result;
+}
+function parseCSV(text) {
+  const lines = text.split('\n').filter(l => l.trim());
+  const headers = parseCSVLine(lines[0]);
+  return lines.slice(1).map(line => {
+    const vals = parseCSVLine(line);
+    const obj = {};
+    headers.forEach((h, i) => { obj[h.trim()] = (vals[i]||'').trim(); });
+    return obj;
+  }).filter(row => Object.values(row).some(v => v));
+}
+function getCol(row, ...keys) {
+  for (const k of keys) {
+    if (row[k] !== undefined && row[k] !== '') return row[k];
+  }
+  return '';
+}
+function isFirstWeek(val) {
+  const v = (val||'').toUpperCase().trim();
+  return v==='OUI'||v==='YES'||v==='TRUE'||v==='1';
+}
+
+async function loadData() {
+  const res = await fetch(CSV_URL);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const text = await res.text();
+  sheetData = parseCSV(text);
+  const seen = new Set();
+  agents = [];
+  sheetData.forEach(row => {
+    const name = getCol(row,'AGENT').trim();
+    if (name && !seen.has(name)) { seen.add(name); agents.push({ name }); }
+  });
+  const moisVals = sheetData.map(r => getCol(r,'Mois de départ')).filter(Boolean);
+  currentMonth = moisVals.length ? moisVals[0] : '';
+}
+
+function getTotalAgent(name) {
+  let t = 0;
+  sheetData.filter(r => getCol(r,'AGENT').trim() === name).forEach(d => {
+    t += (parseFloat(getCol(d,'Bonus Activation'))||0)
+      + (parseFloat(getCol(d,'Bonus 1ere semaine'))||0)
+      + (parseFloat(getCol(d,'Bonus Maintien'))||0)
+      + (parseFloat(getCol(d,'Bonus Maintien boosté'))||0);
+  });
+  return t;
+}
+
+function renderHome() {
+  let html = '';
+  if (currentMonth) html += `<span class="month-pill">Activité — ${currentMonth}</span>`;
+
+  if (agents.length) {
+    html += `<div class="section-label">Choisir ton profil</div><div class="agent-grid">`;
+    agents.forEach((ag, i) => {
+      const cnt = sheetData.filter(r => getCol(r,'AGENT').trim() === ag.name).length;
+      const tot = getTotalAgent(ag.name);
+      html += `<div class="agent-card" onclick="showAgent(${i})">
+        <div class="agent-av">${getInitials(ag.name)}</div>
+        <div class="agent-card-name">${ag.name}</div>
+        <div class="agent-card-total">${fmtF(tot)}</div>
+        <div class="agent-card-count">${cnt} chauffeur${cnt!==1?'s':''}</div>
+      </div>`;
+    });
+    html += `</div><hr class="divider">`;
+  }
+
+  html += `
+    <div class="refresh-row"><button class="refresh-btn" onclick="doRefresh(this)">↻ Actualiser</button></div>
+    <div class="section-label">Offre chauffeur Fleetch CI</div>
+    <div class="offer-grid" style="margin-bottom:16px;">
+      <div class="offer-tile blue">
+        <div class="offer-label">Commission</div>
+        <div class="offer-val" style="font-size:20px;">16,5%</div>
+        <div style="font-size:10px;color:#1847D1;margin-top:2px;">vs 18% ailleurs</div>
+      </div>
+      <div class="offer-tile">
+        <div class="offer-label">Bonus activation</div>
+        <div class="offer-val">5 000 F → +2 000 F</div>
+        <div style="font-size:11px;color:#888;margin-top:2px;">10 000 F → +4 000 F</div>
+      </div>
+      <div class="offer-tile full">
+        <div class="offer-label">Bonus performance (1ère semaine)</div>
+        <div class="offer-val">50–120 courses : +1 000 F &nbsp;|&nbsp; +120 courses : +3 000 F</div>
+      </div>
+      <div class="offer-tile full">
+        <div class="offer-label">Club exclusif</div>
+        <div class="offer-val">+10 courses = cadeaux & avantages</div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="section-label">Variable agent</div>
+    <div class="card" style="padding:12px 16px;">
+      <table class="var-table">
+        <tr><td>Activation (10+ courses)</td><td>1 000 F</td></tr>
+        <tr><td>Performance (70+ courses / 1ère semaine)</td><td>2 500 F</td></tr>
+        <tr><td>Maintien (120+ courses / mois)</td><td>1 000 F</td></tr>
+        <tr><td>Très actif (270+ courses / mois)</td><td>4 000 F</td></tr>
+      </table>
+    </div>
+    <hr class="divider">
+    <div class="section-label">Comment démarrer ?</div>
+    <div class="card" style="font-size:13px;color:#555;line-height:2;">
+      1. Se connecter sur <strong style="color:#1a1a1a">Yango Pro</strong><br>
+      2. Vérifier que <strong style="color:#1847D1">Fleetch CI</strong> est le partenaire actif<br>
+      3. Faire la <strong style="color:#1a1a1a">première course</strong> pour activer les bonus
+    </div>
+  `;
+
+  document.getElementById('home-body').innerHTML = html;
+}
+
+function showAgent(idx) {
+  const ag = agents[idx];
+  const myDrivers = sheetData.filter(r => getCol(r,'AGENT').trim() === ag.name);
+  const total = getTotalAgent(ag.name);
+
+  document.getElementById('agent-title').textContent = ag.name;
+  document.getElementById('agent-subtitle').textContent = currentMonth ? `Activité de ${currentMonth}` : '';
+  document.getElementById('total-val').textContent = fmtF(total);
+  document.getElementById('total-sub').textContent = `${myDrivers.length} chauffeur${myDrivers.length!==1?'s':''}`;
+
+  const list = document.getElementById('drivers-list');
+  list.innerHTML = '';
+
+  if (!myDrivers.length) {
+    list.innerHTML = '<div class="empty-msg">Aucun chauffeur assigné</div>';
+  } else {
+    myDrivers.forEach(d => {
+      const name = getCol(d,'driver_name') || '—';
+      const phone = getCol(d,'Numéro de téléphone') || '—';
+      const totalRides = getCol(d,'Total Rides ') || getCol(d,'Total Rides') || '0';
+      const hier = getCol(d,'Nbr_rides hier') || '0';
+      const sept = getCol(d,'Nbr_rides 7 last days') || '0';
+      const todo = getCol(d,'TO DO');
+      const dateStart = getCol(d,'Date démarrage') || '—';
+      const lastRide = getCol(d,'Nombre de jours depuis le dernier ride') || '—';
+      const coursesMois = getCol(d,'Nombre de courses du mois actuel') || '0';
+      const restMaintien = getCol(d,'Nombre de courses restant pour bonus Maintien') || '0';
+      const fw = isFirstWeek(getCol(d,'1ère semaine en cours ?'));
+      const coursesS1 = getCol(d,'Nombre de courses en 1ere semaine') || '0';
+      const restPerf = getCol(d,'Nombre de courses restant pour bonus performance') || '0';
+      const bActiv = parseFloat(getCol(d,'Bonus Activation')) || 0;
+      const bS1 = parseFloat(getCol(d,'Bonus 1ere semaine')) || 0;
+      const bMaintien = parseFloat(getCol(d,'Bonus Maintien')) || 0;
+      const bBoost = parseFloat(getCol(d,'Bonus Maintien boosté')) || 0;
+      const hasBonuses = bActiv>0||bS1>0||bMaintien>0||bBoost>0;
+      const ridesN = parseInt(totalRides)||0;
+      const rc = ridesN < 10 ? 'warn' : 'good';
+      const isTodo = todo && todo.toLowerCase()!=='non' && todo!=='';
+      const lastRideN = parseInt(lastRide)||0;
+      const inactifTag = lastRideN > 3 ? `<span class="inactif-tag">${lastRide}j sans ride</span>` : '';
+
+      const weekHtml = fw ? `<div class="week-strip">
+        <div class="week-title">1ère semaine en cours</div>
+        <div class="week-items">
+          <span class="week-item"><strong>${coursesS1}</strong> courses faites</span>
+          <span class="week-item"><strong>${restPerf}</strong> restantes pour bonus perf.</span>
+        </div>
+      </div>` : '';
+
+      const bonusHtml = hasBonuses ? `<div class="bonus-strip">
+        <div class="bcell"><div class="bcell-l">Activation</div><div class="bcell-v ${bActiv>0?'on':'off'}">${fmtF(bActiv)}</div></div>
+        <div class="bcell"><div class="bcell-l">1ère sem.</div><div class="bcell-v ${bS1>0?'on':'off'}">${fmtF(bS1)}</div></div>
+        <div class="bcell"><div class="bcell-l">Maintien</div><div class="bcell-v ${bMaintien>0?'on':'off'}">${fmtF(bMaintien)}</div></div>
+        <div class="bcell"><div class="bcell-l">Boosté</div><div class="bcell-v ${bBoost>0?'on':'off'}">${fmtF(bBoost)}</div></div>
+      </div>` : '';
+
+      const el = document.createElement('div');
+      el.className = 'dcard';
+      el.innerHTML = `
+        <div class="dcard-top">
+          <div class="dname-row">
+            <div class="dav">${getInitials(name)}</div>
+            <div>
+              <div class="dname">${name}${inactifTag}</div>
+              <div class="dphone">${phone} · Démarrage : ${dateStart}</div>
+            </div>
+          </div>
+          <span class="todo-pill ${isTodo?'todo-action':'todo-ok'}">${isTodo?todo:'OK'}</span>
+        </div>
+        <div class="dstats">
+          <div class="dstat"><div class="dstat-l">Total rides</div><div class="dstat-v ${rc}">${totalRides}</div></div>
+          <div class="dstat"><div class="dstat-l">Hier</div><div class="dstat-v">${hier}</div></div>
+          <div class="dstat"><div class="dstat-l">7 derniers jours</div><div class="dstat-v">${sept}</div></div>
+        </div>
+        <div class="dstats">
+          <div class="dstat"><div class="dstat-l">Ce mois</div><div class="dstat-v">${coursesMois}</div></div>
+          <div class="dstat"><div class="dstat-l">Restant maintien</div><div class="dstat-v">${restMaintien}</div></div>
+          <div class="dstat"><div class="dstat-l">Sans ride</div><div class="dstat-v">${lastRide}j</div></div>
+        </div>
+        ${weekHtml}
+        ${bonusHtml}
+      `;
+      list.appendChild(el);
+    });
+  }
+
+  document.getElementById('home-screen').style.display = 'none';
+  document.getElementById('agent-screen').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+document.getElementById('back-btn').addEventListener('click', () => {
+  document.getElementById('agent-screen').style.display = 'none';
+  document.getElementById('home-screen').style.display = 'block';
+  window.scrollTo(0,0);
+});
+
+async function doRefresh(btn) {
+  btn.textContent = '...'; btn.disabled = true;
+  try { await loadData(); renderHome(); }
+  catch(e) { alert('Erreur : ' + e.message); }
+  finally { btn.textContent = '↻ Actualiser'; btn.disabled = false; }
+}
+
+(async () => {
+  try {
+    await loadData();
+    renderHome();
+  } catch(e) {
+    document.getElementById('home-body').innerHTML = `
+      <div class="error-box">
+        <strong>Erreur de chargement</strong><br>
+        ${e.message}<br><br>
+        Vérifie que le sheet est publié via <em>Fichier → Publier sur le web → CSV</em>.
+      </div>`;
+  }
+})();
+</script>
+</body>
+</html>
