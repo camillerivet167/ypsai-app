@@ -46,22 +46,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   border: 2px solid transparent; position: relative;
 }
 .agent-card:hover { box-shadow: 0 4px 12px rgba(24,71,209,0.15); border-color: #1847D1; transform: translateY(-1px); }
-.agent-card.demo-card { border: 2px dashed #DDDDDD; }
-.agent-card.demo-card:hover { border-color: #1847D1; }
-.demo-badge {
-  position: absolute; top: 7px; right: 7px;
-  font-size: 9px; background: #F0F0F0; color: #999;
-  padding: 2px 5px; border-radius: 4px; font-weight: 700; letter-spacing: 0.03em;
-}
 .agent-av {
   width: 44px; height: 44px; border-radius: 50%;
   background: #E8EEFA; display: flex; align-items: center; justify-content: center;
   font-size: 15px; font-weight: 600; color: #1847D1; margin: 0 auto 10px;
 }
-.agent-av.demo { background: #F0F0F0; color: #999; }
 .agent-card-name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
 .agent-card-total { font-size: 13px; color: #1847D1; font-weight: 600; margin-top: 3px; }
-.agent-card-total.demo-tot { color: #999; }
 .agent-card-count { font-size: 11px; color: #888; margin-top: 2px; }
 
 .divider { border: none; border-top: 1px solid #F0F0F0; margin: 16px 0; }
@@ -93,11 +84,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 .agent-title { font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 2px; }
 .agent-subtitle { font-size: 13px; color: #888; margin-bottom: 14px; }
-
-.demo-banner {
-  background: #FFF8E0; border: 1px solid #FAC775; border-radius: 10px;
-  padding: 10px 14px; font-size: 12px; color: #854F0B; margin-bottom: 14px; line-height: 1.5;
-}
 
 .total-bar {
   background: #1847D1; border-radius: 12px;
@@ -152,8 +138,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   .offer-tile.full { grid-column: 1; }
   .bonus-strip { grid-template-columns: repeat(2,1fr); }
   .bcell:nth-child(2) { border-right: none; }
-  .bcell:nth-child(3),
-  .bcell:nth-child(4) { border-top: 1px solid #F0F0F0; }
+  .bcell:nth-child(3), .bcell:nth-child(4) { border-top: 1px solid #F0F0F0; }
 }
 </style>
 </head>
@@ -172,7 +157,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <button class="back-btn" id="back-btn">← Retour</button>
     <div id="agent-title" class="agent-title"></div>
     <div id="agent-subtitle" class="agent-subtitle"></div>
-    <div id="demo-banner" class="demo-banner" style="display:none;">Profil de démonstration — données simulées pour illustrer les objectifs du mois</div>
     <div class="total-bar">
       <div>
         <div class="total-bar-label">Variable total gagné</div>
@@ -187,33 +171,156 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <script>
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQAAWDvf1mtml-i0tTIkwJEwI4m6cxSInXYJDd_9U-hpGaDYXKvzWpMzb6lJ9Xh0NJ7aDvIu8Pk2Ub0/pub?gid=0&single=true&output=csv';
 
+// 10 faux agents — fin de mois avril 2025 — variables 50 000–120 000 FCFA
+// Chauffeurs : 2 à 4 noms ivoiriens par agent
 const DEMO_AGENTS = [
   {
-    name: 'Koné Seydou', demo: true,
+    // Total : 8×(1000+2500+1000+4000) + 1×(1000+1000) = 8×8500 + 2000 = 70 000 F
+    name: 'Koné Seydou',
     drivers: [
-      { name:'Bamba Adama',      phone:'07 12 34 56', dateStart:'01/04/2025', lastRide:1, totalRides:312, hier:11, sept:74, coursesMois:312, restMaintien:0,  fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Diallo Moussa',    phone:'05 98 76 54', dateStart:'01/04/2025', lastRide:0, totalRides:278, hier:9,  sept:63, coursesMois:278, restMaintien:0,  fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Coulibaly Issouf', phone:'01 23 45 67', dateStart:'03/04/2025', lastRide:2, totalRides:187, hier:7,  sept:48, coursesMois:187, restMaintien:0,  fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Traoré Brahima',   phone:'07 55 44 33', dateStart:'08/04/2025', lastRide:1, totalRides:143, hier:6,  sept:41, coursesMois:143, restMaintien:0,  fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Ouattara Lamine',  phone:'05 66 77 88', dateStart:'12/04/2025', lastRide:3, totalRides:98,  hier:4,  sept:28, coursesMois:98,  restMaintien:22, fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'Relancer' },
-      { name:'Yao Koffi',        phone:'07 11 22 33', dateStart:'15/04/2025', lastRide:1, totalRides:67,  hier:3,  sept:19, coursesMois:67,  restMaintien:53, fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'' },
+      { name:'Bamba Adama',       phone:'07 12 34 56', dateStart:'01/04/2025', lastCourse:0, totalCourses:341, hier:13, sept:82, coursesMois:341, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Diallo Moussa',     phone:'05 98 76 54', dateStart:'01/04/2025', lastCourse:1, totalCourses:318, hier:12, sept:76, coursesMois:318, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Traoré Brahima',    phone:'07 55 44 33', dateStart:'01/04/2025', lastCourse:1, totalCourses:298, hier:11, sept:70, coursesMois:298, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Coulibaly Issouf',  phone:'05 23 45 67', dateStart:'02/04/2025', lastCourse:0, totalCourses:284, hier:10, sept:66, coursesMois:284, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Ouattara Lamine',   phone:'01 34 56 78', dateStart:'03/04/2025', lastCourse:2, totalCourses:271, hier:10, sept:63, coursesMois:271, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Yao Koffi',         phone:'07 45 67 89', dateStart:'04/04/2025', lastCourse:1, totalCourses:259, hier:9,  sept:60, coursesMois:259, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Doumbia Sekou',     phone:'05 56 78 90', dateStart:'05/04/2025', lastCourse:1, totalCourses:243, hier:9,  sept:57, coursesMois:243, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Sanogo Ibrahim',    phone:'01 67 89 01', dateStart:'06/04/2025', lastCourse:3, totalCourses:148, hier:5,  sept:40, coursesMois:148, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
     ]
   },
   {
-    name: 'Touré Aminata', demo: true,
+    // Total : 6×8500 + 3×(1000+2500+1000) + 1×(1000+1000) = 51000+13500+2000 = ~98 000 F
+    name: 'Touré Aminata',
     drivers: [
-      { name:'Gbagbo Eric',    phone:'07 44 55 66', dateStart:'01/04/2025', lastRide:0, totalRides:334, hier:13, sept:81, coursesMois:334, restMaintien:0,  fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Fofana Cheick',  phone:'05 33 22 11', dateStart:'01/04/2025', lastRide:1, totalRides:291, hier:10, sept:69, coursesMois:291, restMaintien:0,  fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Konaté Drissa',  phone:'01 77 88 99', dateStart:'02/04/2025', lastRide:2, totalRides:254, hier:9,  sept:58, coursesMois:254, restMaintien:0,  fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Sanogo Ibrahim', phone:'07 99 00 11', dateStart:'05/04/2025', lastRide:1, totalRides:176, hier:7,  sept:44, coursesMois:176, restMaintien:0,  fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Niamké Sylvain', phone:'05 22 33 44', dateStart:'10/04/2025', lastRide:5, totalRides:89,  hier:0,  sept:12, coursesMois:89,  restMaintien:31, fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'Inactif 5j' },
-      { name:'Akrou Pascal',   phone:'07 66 55 44', dateStart:'14/04/2025', lastRide:1, totalRides:112, hier:5,  sept:31, coursesMois:112, restMaintien:8,  fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'' },
-      { name:'Doumbia Sekou',  phone:'01 55 44 33', dateStart:'17/04/2025', lastRide:2, totalRides:58,  hier:2,  sept:16, coursesMois:58,  restMaintien:62, fw:false, coursesS1:0, restPerf:0, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'' },
+      { name:'Gbagbo Eric',       phone:'07 44 55 66', dateStart:'01/04/2025', lastCourse:0, totalCourses:352, hier:14, sept:84, coursesMois:352, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Fofana Cheick',     phone:'05 33 22 11', dateStart:'01/04/2025', lastCourse:1, totalCourses:329, hier:12, sept:78, coursesMois:329, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Konaté Drissa',     phone:'01 77 88 99', dateStart:'01/04/2025', lastCourse:0, totalCourses:311, hier:12, sept:74, coursesMois:311, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Kouassi Hyacinthe', phone:'07 99 00 11', dateStart:'02/04/2025', lastCourse:1, totalCourses:293, hier:11, sept:69, coursesMois:293, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Aké Lambert',       phone:'05 88 77 66', dateStart:'03/04/2025', lastCourse:2, totalCourses:276, hier:10, sept:65, coursesMois:276, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Méa Franck',        phone:'01 55 44 33', dateStart:'04/04/2025', lastCourse:1, totalCourses:258, hier:9,  sept:61, coursesMois:258, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Loba Rodrigue',     phone:'07 22 33 44', dateStart:'05/04/2025', lastCourse:2, totalCourses:187, hier:7,  sept:48, coursesMois:187, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Gnagbo Arsène',     phone:'05 11 22 33', dateStart:'07/04/2025', lastCourse:1, totalCourses:163, hier:6,  sept:43, coursesMois:163, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Tra Bi Émile',      phone:'01 00 11 22', dateStart:'10/04/2025', lastCourse:4, totalCourses:94,  hier:0,  sept:13, coursesMois:94,  restMaintien:26, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'Inactif 4j' },
     ]
-  }
+  },
+  {
+    // Total : 4×8500 + 2×4500 + 1×2000 = 34000+9000+2000 = ~54 000 F
+    name: 'Ouattara Mariam',
+    drivers: [
+      { name:'Kipré Wenceslas',   phone:'07 66 77 88', dateStart:'01/04/2025', lastCourse:1, totalCourses:334, hier:13, sept:80, coursesMois:334, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Séri Théodore',     phone:'05 55 44 33', dateStart:'01/04/2025', lastCourse:0, totalCourses:307, hier:12, sept:73, coursesMois:307, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Yoboué Ghislain',   phone:'01 44 33 22', dateStart:'02/04/2025', lastCourse:1, totalCourses:289, hier:11, sept:68, coursesMois:289, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Zadi Valentin',     phone:'07 33 22 11', dateStart:'03/04/2025', lastCourse:2, totalCourses:272, hier:10, sept:64, coursesMois:272, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Brou Hilaire',      phone:'05 22 11 00', dateStart:'05/04/2025', lastCourse:1, totalCourses:196, hier:7,  sept:50, coursesMois:196, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Djédjé Constant',   phone:'01 11 00 99', dateStart:'08/04/2025', lastCourse:2, totalCourses:131, hier:5,  sept:36, coursesMois:131, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Niamké Sylvain',    phone:'07 00 99 88', dateStart:'13/04/2025', lastCourse:1, totalCourses:78,  hier:3,  sept:21, coursesMois:78,  restMaintien:42, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'' },
+    ]
+  },
+  {
+    // Total : 5×8500 + 3×4500 = 42500+13500 = ~56 000 F
+    name: 'Dié Jean-Marc',
+    drivers: [
+      { name:'Akrou Pascal',      phone:'07 88 99 00', dateStart:'01/04/2025', lastCourse:0, totalCourses:346, hier:13, sept:83, coursesMois:346, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Kouamé Désiré',     phone:'05 77 88 99', dateStart:'01/04/2025', lastCourse:1, totalCourses:322, hier:12, sept:77, coursesMois:322, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Ahoua Martial',     phone:'01 66 77 88', dateStart:'02/04/2025', lastCourse:1, totalCourses:301, hier:11, sept:72, coursesMois:301, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Ettien Benoît',     phone:'07 55 66 77', dateStart:'03/04/2025', lastCourse:2, totalCourses:284, hier:10, sept:67, coursesMois:284, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Kra Narcisse',      phone:'05 44 55 66', dateStart:'04/04/2025', lastCourse:1, totalCourses:265, hier:10, sept:62, coursesMois:265, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Assouan Gilles',    phone:'01 33 44 55', dateStart:'05/04/2025', lastCourse:1, totalCourses:178, hier:7,  sept:46, coursesMois:178, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Lago Fernand',      phone:'07 22 33 44', dateStart:'07/04/2025', lastCourse:2, totalCourses:152, hier:6,  sept:41, coursesMois:152, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Adjoumani Cédric',  phone:'05 11 22 33', dateStart:'11/04/2025', lastCourse:1, totalCourses:122, hier:5,  sept:33, coursesMois:122, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+    ]
+  },
+  {
+    // Total : 7×8500 + 1×4500 + 1×2000 = 59500+4500+2000 = ~66 000 F
+    name: 'Sylla Fatoumata',
+    drivers: [
+      { name:'Ouédraogo Lassina', phone:'07 99 00 11', dateStart:'01/04/2025', lastCourse:0, totalCourses:358, hier:14, sept:86, coursesMois:358, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'N\'Goran Alexis',   phone:'05 88 99 00', dateStart:'01/04/2025', lastCourse:1, totalCourses:336, hier:13, sept:80, coursesMois:336, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Diomandé Cheick',   phone:'01 77 88 99', dateStart:'01/04/2025', lastCourse:1, totalCourses:314, hier:12, sept:75, coursesMois:314, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Soro Karim',        phone:'07 66 77 88', dateStart:'02/04/2025', lastCourse:0, totalCourses:296, hier:11, sept:70, coursesMois:296, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Gueu Rodrigue',     phone:'05 55 66 77', dateStart:'03/04/2025', lastCourse:2, totalCourses:278, hier:10, sept:66, coursesMois:278, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Gbané Ismaël',      phone:'01 44 55 66', dateStart:'04/04/2025', lastCourse:1, totalCourses:261, hier:10, sept:62, coursesMois:261, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Camara Souleymane', phone:'07 33 44 55', dateStart:'05/04/2025', lastCourse:1, totalCourses:244, hier:9,  sept:58, coursesMois:244, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Koné Drissa',       phone:'05 22 33 44', dateStart:'06/04/2025', lastCourse:1, totalCourses:168, hier:6,  sept:44, coursesMois:168, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Bamba Lassina',     phone:'01 11 22 33', dateStart:'09/04/2025', lastCourse:5, totalCourses:87,  hier:0,  sept:10, coursesMois:87,  restMaintien:33, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'Inactif 5j' },
+    ]
+  },
+  {
+    // Total : 10×8500 = 85 000 F
+    name: 'Bah Mamadou',
+    drivers: [
+      { name:'Yapi Serge',        phone:'07 11 22 33', dateStart:'01/04/2025', lastCourse:0, totalCourses:363, hier:14, sept:87, coursesMois:363, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Gnahoua Jérôme',    phone:'05 00 11 22', dateStart:'01/04/2025', lastCourse:1, totalCourses:344, hier:13, sept:82, coursesMois:344, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Touré Aboubakar',   phone:'01 99 00 11', dateStart:'01/04/2025', lastCourse:0, totalCourses:328, hier:12, sept:78, coursesMois:328, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Fané Soungalo',     phone:'07 88 99 00', dateStart:'02/04/2025', lastCourse:1, totalCourses:311, hier:12, sept:74, coursesMois:311, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+    ]
+  },
+  {
+    // Total : 4×8500 + 3×4500 + 1×2000 = 34000+13500+2000 = ~50 000 F
+    name: 'Camara Ibrahima',
+    drivers: [
+      { name:'Dago Casimir',      phone:'05 77 88 99', dateStart:'01/04/2025', lastCourse:1, totalCourses:338, hier:13, sept:81, coursesMois:338, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Oro Sylvestre',     phone:'01 66 77 88', dateStart:'01/04/2025', lastCourse:0, totalCourses:315, hier:12, sept:75, coursesMois:315, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Wahi Théophile',    phone:'07 55 66 77', dateStart:'02/04/2025', lastCourse:2, totalCourses:297, hier:11, sept:70, coursesMois:297, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Dali Hyppolite',    phone:'05 44 55 66', dateStart:'03/04/2025', lastCourse:1, totalCourses:279, hier:10, sept:66, coursesMois:279, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Gogbé Ernest',      phone:'01 33 44 55', dateStart:'05/04/2025', lastCourse:1, totalCourses:192, hier:7,  sept:49, coursesMois:192, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Nanan Kouadio',     phone:'07 22 33 44', dateStart:'07/04/2025', lastCourse:2, totalCourses:157, hier:6,  sept:42, coursesMois:157, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Tia Célestin',      phone:'05 11 22 33', dateStart:'10/04/2025', lastCourse:1, totalCourses:134, hier:5,  sept:36, coursesMois:134, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Eba Christian',     phone:'01 00 11 22', dateStart:'14/04/2025', lastCourse:2, totalCourses:83,  hier:3,  sept:23, coursesMois:83,  restMaintien:37, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'Relancer' },
+    ]
+  },
+  {
+    // Total : 14×8500 = 119 000 F (meilleur agent)
+    name: 'Diomandé Salimata',
+    drivers: [
+      { name:'Kouamé Alphonse',   phone:'07 99 00 11', dateStart:'01/04/2025', lastCourse:0, totalCourses:371, hier:14, sept:89, coursesMois:371, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Bogui Landry',      phone:'05 88 99 00', dateStart:'01/04/2025', lastCourse:1, totalCourses:354, hier:13, sept:85, coursesMois:354, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Assoumou Patrick',  phone:'01 77 88 99', dateStart:'01/04/2025', lastCourse:0, totalCourses:339, hier:13, sept:81, coursesMois:339, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Ettien Benoît',     phone:'07 66 77 88', dateStart:'01/04/2025', lastCourse:1, totalCourses:324, hier:12, sept:77, coursesMois:324, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Kra Narcisse',      phone:'05 55 66 77', dateStart:'02/04/2025', lastCourse:1, totalCourses:308, hier:12, sept:73, coursesMois:308, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Assouan Gilles',    phone:'01 44 55 66', dateStart:'02/04/2025', lastCourse:0, totalCourses:293, hier:11, sept:69, coursesMois:293, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Lago Fernand',      phone:'07 33 44 55', dateStart:'03/04/2025', lastCourse:2, totalCourses:278, hier:10, sept:66, coursesMois:278, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Adjoumani Cédric',  phone:'05 22 33 44', dateStart:'03/04/2025', lastCourse:1, totalCourses:265, hier:10, sept:63, coursesMois:265, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Brou Hilaire',      phone:'01 11 22 33', dateStart:'04/04/2025', lastCourse:1, totalCourses:251, hier:9,  sept:60, coursesMois:251, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Ahoua Martial',     phone:'07 00 11 22', dateStart:'04/04/2025', lastCourse:0, totalCourses:238, hier:9,  sept:57, coursesMois:238, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Loba Rodrigue',     phone:'05 99 00 11', dateStart:'05/04/2025', lastCourse:2, totalCourses:221, hier:8,  sept:53, coursesMois:221, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Gnagbo Arsène',     phone:'01 88 99 00', dateStart:'05/04/2025', lastCourse:1, totalCourses:207, hier:8,  sept:50, coursesMois:207, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Tra Bi Émile',      phone:'07 77 88 99', dateStart:'06/04/2025', lastCourse:1, totalCourses:194, hier:7,  sept:47, coursesMois:194, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Séri Théodore',     phone:'05 66 77 88', dateStart:'07/04/2025', lastCourse:2, totalCourses:178, hier:7,  sept:45, coursesMois:178, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+    ]
+  },
+  {
+    // Total : 5×8500 + 2×4500 + 1×2000 = 42500+9000+2000 = ~54 000 F
+    name: 'Guéi Patrick',
+    drivers: [
+      { name:'Zran Marcel',       phone:'01 55 66 77', dateStart:'01/04/2025', lastCourse:1, totalCourses:349, hier:13, sept:84, coursesMois:349, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Bah Oumar',         phone:'07 44 55 66', dateStart:'01/04/2025', lastCourse:0, totalCourses:327, hier:12, sept:78, coursesMois:327, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Oula Tiémoko',      phone:'05 33 44 55', dateStart:'02/04/2025', lastCourse:1, totalCourses:308, hier:12, sept:73, coursesMois:308, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Kouakou Mathieu',   phone:'01 22 33 44', dateStart:'03/04/2025', lastCourse:2, totalCourses:289, hier:11, sept:68, coursesMois:289, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Diby Hyacinthe',    phone:'07 11 22 33', dateStart:'04/04/2025', lastCourse:1, totalCourses:271, hier:10, sept:64, coursesMois:271, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Gbané Ismaël',      phone:'05 00 11 22', dateStart:'06/04/2025', lastCourse:1, totalCourses:163, hier:6,  sept:43, coursesMois:163, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Koné Drissa',       phone:'01 99 00 11', dateStart:'09/04/2025', lastCourse:3, totalCourses:127, hier:4,  sept:34, coursesMois:127, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Dago Casimir',      phone:'07 88 99 00', dateStart:'13/04/2025', lastCourse:1, totalCourses:96,  hier:4,  sept:26, coursesMois:96,  restMaintien:24, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'' },
+    ]
+  },
+  {
+    // Total : 8×8500 + 1×4500 = 68000+4500 = ~72 500 F
+    name: 'Soro Kadiatou',
+    drivers: [
+      { name:'Méa Franck',        phone:'05 77 88 99', dateStart:'01/04/2025', lastCourse:0, totalCourses:357, hier:14, sept:85, coursesMois:357, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Ouattara Lacina',   phone:'01 66 77 88', dateStart:'01/04/2025', lastCourse:1, totalCourses:338, hier:13, sept:81, coursesMois:338, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Aké Lambert',       phone:'07 55 66 77', dateStart:'01/04/2025', lastCourse:1, totalCourses:321, hier:12, sept:77, coursesMois:321, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Yoboué Ghislain',   phone:'05 44 55 66', dateStart:'02/04/2025', lastCourse:0, totalCourses:304, hier:11, sept:72, coursesMois:304, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Gbagbo Eric',       phone:'01 33 44 55', dateStart:'03/04/2025', lastCourse:2, totalCourses:286, hier:11, sept:68, coursesMois:286, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Coulibaly Bakary',  phone:'07 22 33 44', dateStart:'03/04/2025', lastCourse:1, totalCourses:269, hier:10, sept:64, coursesMois:269, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Fofana Ousmane',    phone:'05 11 22 33', dateStart:'04/04/2025', lastCourse:1, totalCourses:253, hier:9,  sept:60, coursesMois:253, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Diallo Seydou',     phone:'01 00 11 22', dateStart:'04/04/2025', lastCourse:2, totalCourses:237, hier:9,  sept:56, coursesMois:237, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Traoré Lacina',     phone:'07 99 00 11', dateStart:'06/04/2025', lastCourse:1, totalCourses:174, hier:7,  sept:45, coursesMois:174, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+    ]
+  },
 ];
 
-let sheetData = [], agents = [], currentMonth = '';
+let sheetData = [], realAgents = [], currentMonth = '';
 
 function getInitials(n) {
   if (!n) return '?';
@@ -262,10 +369,10 @@ async function loadData() {
   const text = await res.text();
   sheetData = parseCSV(text);
   const seen = new Set();
-  agents = [];
+  realAgents = [];
   sheetData.forEach(row => {
     const name = getCol(row,'AGENT').trim();
-    if (name && !seen.has(name)) { seen.add(name); agents.push({ name, demo: false }); }
+    if (name && !seen.has(name)) { seen.add(name); realAgents.push({ name, isDemo: false }); }
   });
   const moisVals = sheetData.map(r => getCol(r,'Mois de départ')).filter(Boolean);
   currentMonth = moisVals.length ? moisVals[0] : '';
@@ -273,7 +380,7 @@ async function loadData() {
 function getDemoTotal(ag) {
   return ag.drivers.reduce((s,d) => s+d.bActiv+d.bS1+d.bMaintien+d.bBoost, 0);
 }
-function getTotalAgent(name) {
+function getRealTotal(name) {
   let t = 0;
   sheetData.filter(r => getCol(r,'AGENT').trim() === name).forEach(d => {
     t += (parseFloat(getCol(d,'Bonus Activation'))||0)+(parseFloat(getCol(d,'Bonus 1ere semaine'))||0)
@@ -282,35 +389,29 @@ function getTotalAgent(name) {
   return t;
 }
 
+function buildAgentCard(ag, idx, isDemo) {
+  const cnt = isDemo ? ag.drivers.length : sheetData.filter(r => getCol(r,'AGENT').trim() === ag.name).length;
+  const tot = isDemo ? getDemoTotal(ag) : getRealTotal(ag.name);
+  return `<div class="agent-card" onclick="showAgent('${isDemo?'demo':'real'}',${idx})">
+    <div class="agent-av">${getInitials(ag.name)}</div>
+    <div class="agent-card-name">${ag.name}</div>
+    <div class="agent-card-total">${fmtF(tot)}</div>
+    <div class="agent-card-count">${cnt} chauffeur${cnt!==1?'s':''}</div>
+  </div>`;
+}
+
 function renderHome() {
-  let html = `<span class="month-pill">Activité, soit le meilleur agent !</span>`;
+  let html = `<span class="month-pill">Soit le meilleur agent !</span>`;
 
-  if (agents.length) {
-    html += `<div class="section-label" style="margin-top:14px;">Choisir ton profil</div><div class="agent-grid">`;
-    agents.forEach((ag, i) => {
-      const cnt = sheetData.filter(r => getCol(r,'AGENT').trim() === ag.name).length;
-      const tot = getTotalAgent(ag.name);
-      html += `<div class="agent-card" onclick="showAgent('real',${i})">
-        <div class="agent-av">${getInitials(ag.name)}</div>
-        <div class="agent-card-name">${ag.name}</div>
-        <div class="agent-card-total">${fmtF(tot)}</div>
-        <div class="agent-card-count">${cnt} chauffeur${cnt!==1?'s':''}</div>
-      </div>`;
-    });
-    html += `</div>`;
-  }
+  // On mélange vrais agents + faux dans la même grille
+  html += `<div class="section-label" style="margin-top:14px;">Choisir ton profil</div><div class="agent-grid">`;
 
-  html += `<div class="section-label" style="margin-top:6px;">Top agents du mois <span style="font-size:10px;color:#BBB;font-weight:400;text-transform:none;letter-spacing:0;">(objectifs)</span></div><div class="agent-grid">`;
-  DEMO_AGENTS.forEach((ag, i) => {
-    const tot = getDemoTotal(ag);
-    html += `<div class="agent-card demo-card" onclick="showAgent('demo',${i})">
-      <span class="demo-badge">OBJECTIF</span>
-      <div class="agent-av demo">${getInitials(ag.name)}</div>
-      <div class="agent-card-name">${ag.name}</div>
-      <div class="agent-card-total demo-tot">${fmtF(tot)}</div>
-      <div class="agent-card-count">${ag.drivers.length} chauffeurs</div>
-    </div>`;
-  });
+  // Vrais agents d'abord
+  realAgents.forEach((ag, i) => { html += buildAgentCard(ag, i, false); });
+
+  // Puis faux agents — même style, pas de distinction visuelle
+  DEMO_AGENTS.forEach((ag, i) => { html += buildAgentCard(ag, i, true); });
+
   html += `</div><hr class="divider">`;
 
   html += `
@@ -358,30 +459,28 @@ function renderHome() {
 }
 
 function showAgent(type, idx) {
-  const isDemo = type === 'demo';
-  document.getElementById('demo-banner').style.display = isDemo ? 'block' : 'none';
   const list = document.getElementById('drivers-list');
   list.innerHTML = '';
 
-  if (isDemo) {
+  if (type === 'demo') {
     const ag = DEMO_AGENTS[idx];
     const total = getDemoTotal(ag);
     document.getElementById('agent-title').textContent = ag.name;
-    document.getElementById('agent-subtitle').textContent = currentMonth ? `Objectif — ${currentMonth}` : 'Objectif du mois';
+    document.getElementById('agent-subtitle').textContent = currentMonth ? `Activité de ${currentMonth}` : 'Activité du mois';
     document.getElementById('total-val').textContent = fmtF(total);
-    document.getElementById('total-sub').textContent = `${ag.drivers.length} chauffeurs`;
+    document.getElementById('total-sub').textContent = `${ag.drivers.length} chauffeur${ag.drivers.length!==1?'s':''}`;
     ag.drivers.forEach(d => renderDriverCard(list, {
       name:d.name, phone:d.phone, dateStart:d.dateStart,
-      lastRide:String(d.lastRide), totalRides:String(d.totalRides),
+      lastCourse:String(d.lastCourse), totalCourses:String(d.totalCourses),
       hier:String(d.hier), sept:String(d.sept), todo:d.todo,
       coursesMois:String(d.coursesMois), restMaintien:String(d.restMaintien),
-      fw:d.fw, coursesS1:String(d.coursesS1), restPerf:String(d.restPerf),
+      fw:false, coursesS1:'0', restPerf:'0',
       bActiv:d.bActiv, bS1:d.bS1, bMaintien:d.bMaintien, bBoost:d.bBoost
     }));
   } else {
-    const ag = agents[idx];
+    const ag = realAgents[idx];
     const myDrivers = sheetData.filter(r => getCol(r,'AGENT').trim() === ag.name);
-    const total = getTotalAgent(ag.name);
+    const total = getRealTotal(ag.name);
     document.getElementById('agent-title').textContent = ag.name;
     document.getElementById('agent-subtitle').textContent = currentMonth ? `Activité de ${currentMonth}` : '';
     document.getElementById('total-val').textContent = fmtF(total);
@@ -392,8 +491,8 @@ function showAgent(type, idx) {
       myDrivers.forEach(d => renderDriverCard(list, {
         name:getCol(d,'driver_name')||'—', phone:getCol(d,'Numéro de téléphone')||'—',
         dateStart:getCol(d,'Date démarrage')||'—',
-        lastRide:getCol(d,'Nombre de jours depuis le dernier ride')||'0',
-        totalRides:getCol(d,'Total Rides ')||getCol(d,'Total Rides')||'0',
+        lastCourse:getCol(d,'Nombre de jours depuis le dernier ride')||'0',
+        totalCourses:getCol(d,'Total Rides ')||getCol(d,'Total Rides')||'0',
         hier:getCol(d,'Nbr_rides hier')||'0', sept:getCol(d,'Nbr_rides 7 last days')||'0',
         todo:getCol(d,'TO DO'),
         coursesMois:getCol(d,'Nombre de courses du mois actuel')||'0',
@@ -415,11 +514,11 @@ function showAgent(type, idx) {
 
 function renderDriverCard(list, d) {
   const hasBonuses = d.bActiv>0||d.bS1>0||d.bMaintien>0||d.bBoost>0;
-  const ridesN = parseInt(d.totalRides)||0;
-  const rc = ridesN < 10 ? 'warn' : 'good';
+  const coursesN = parseInt(d.totalCourses)||0;
+  const rc = coursesN < 10 ? 'warn' : 'good';
   const isTodo = d.todo && d.todo.toLowerCase()!=='non' && d.todo!=='';
-  const lastRideN = parseInt(d.lastRide)||0;
-  const inactifTag = lastRideN > 3 ? `<span class="inactif-tag">${d.lastRide}j sans ride</span>` : '';
+  const lastN = parseInt(d.lastCourse)||0;
+  const inactifTag = lastN > 3 ? `<span class="inactif-tag">${d.lastCourse}j sans course</span>` : '';
   const weekHtml = d.fw ? `<div class="week-strip">
     <div class="week-title">1ère semaine en cours</div>
     <div class="week-items">
@@ -447,14 +546,14 @@ function renderDriverCard(list, d) {
       <span class="todo-pill ${isTodo?'todo-action':'todo-ok'}">${isTodo?d.todo:'OK'}</span>
     </div>
     <div class="dstats">
-      <div class="dstat"><div class="dstat-l">Total rides</div><div class="dstat-v ${rc}">${d.totalRides}</div></div>
+      <div class="dstat"><div class="dstat-l">Total courses</div><div class="dstat-v ${rc}">${d.totalCourses}</div></div>
       <div class="dstat"><div class="dstat-l">Hier</div><div class="dstat-v">${d.hier}</div></div>
       <div class="dstat"><div class="dstat-l">7 derniers jours</div><div class="dstat-v">${d.sept}</div></div>
     </div>
     <div class="dstats">
       <div class="dstat"><div class="dstat-l">Ce mois</div><div class="dstat-v">${d.coursesMois}</div></div>
       <div class="dstat"><div class="dstat-l">Restant maintien</div><div class="dstat-v">${d.restMaintien}</div></div>
-      <div class="dstat"><div class="dstat-l">Sans ride</div><div class="dstat-v">${d.lastRide}j</div></div>
+      <div class="dstat"><div class="dstat-l">Sans course</div><div class="dstat-v">${d.lastCourse}j</div></div>
     </div>
     ${weekHtml}${bonusHtml}`;
   list.appendChild(el);
