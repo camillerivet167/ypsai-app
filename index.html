@@ -175,99 +175,140 @@ const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQAAWDvf1mtml-i
 // Chauffeurs : 2 à 4 noms ivoiriens par agent
 const DEMO_AGENTS = [
   {
-    // Total : 8×(1000+2500+1000+4000) + 1×(1000+1000) = 8×8500 + 2000 = 70 000 F
     name: 'Scout Seydou',
     drivers: [
-      { name:'Bamba Adama',       phone:'07 12 34 56', dateStart:'01/04/2025', lastCourse:0, totalCourses:341, hier:13, sept:82, coursesMois:341, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Diallo Moussa',     phone:'05 98 76 54', dateStart:'01/04/2025', lastCourse:1, totalCourses:318, hier:12, sept:76, coursesMois:318, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Traoré Brahima',    phone:'07 55 44 33', dateStart:'01/04/2025', lastCourse:1, totalCourses:298, hier:11, sept:70, coursesMois:298, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Coulibaly Issouf',  phone:'05 23 45 67', dateStart:'02/04/2025', lastCourse:0, totalCourses:284, hier:10, sept:66, coursesMois:284, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Ouattara Lamine',   phone:'01 34 56 78', dateStart:'03/04/2025', lastCourse:2, totalCourses:271, hier:10, sept:63, coursesMois:271, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Yao Koffi',         phone:'07 45 67 89', dateStart:'04/04/2025', lastCourse:1, totalCourses:259, hier:9,  sept:60, coursesMois:259, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Doumbia Sekou',     phone:'05 56 78 90', dateStart:'05/04/2025', lastCourse:1, totalCourses:243, hier:9,  sept:57, coursesMois:243, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Sanogo Ibrahim',    phone:'01 67 89 01', dateStart:'06/04/2025', lastCourse:3, totalCourses:148, hier:5,  sept:40, coursesMois:148, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Bamba Adama',       phone:'07 12 34 56', dateStart:'01/04/2025', lastCourse:1, totalCourses:341, hier:13, sept:82, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Diallo Moussa',     phone:'05 98 76 54', dateStart:'01/04/2025', lastCourse:1, totalCourses:318, hier:12, sept:76, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Traoré Brahima',    phone:'07 55 44 33', dateStart:'01/04/2025', lastCourse:1, totalCourses:298, hier:11, sept:70, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Coulibaly Issouf',  phone:'05 23 45 67', dateStart:'02/04/2025', lastCourse:0, totalCourses:284, hier:10, sept:66, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Ouattara Lamine',   phone:'01 34 56 78', dateStart:'03/04/2025', lastCourse:2, totalCourses:271, hier:10, sept:63, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Yao Koffi',         phone:'07 45 67 89', dateStart:'04/04/2025', lastCourse:1, totalCourses:259, hier:9,  sept:60, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Doumbia Sekou',     phone:'05 56 78 90', dateStart:'05/04/2025', lastCourse:1, totalCourses:243, hier:9,  sept:57, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Sanogo Ibrahim',    phone:'01 67 89 01', dateStart:'06/04/2025', lastCourse:3, totalCourses:148, hier:5,  sept:40, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
     ]
   },
   {
-    // Total : 6×8500 + 3×(1000+2500+1000) + 1×(1000+1000) = 51000+13500+2000 = ~98 000 F
     name: 'Scout Aminata',
     drivers: [
-      { name:'Gbagbo Eric',       phone:'07 44 55 66', dateStart:'01/04/2025', lastCourse:0, totalCourses:352, hier:14, sept:84, coursesMois:352, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Fofana Cheick',     phone:'05 33 22 11', dateStart:'01/04/2025', lastCourse:1, totalCourses:329, hier:12, sept:78, coursesMois:329, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Konaté Drissa',     phone:'01 77 88 99', dateStart:'01/04/2025', lastCourse:0, totalCourses:311, hier:12, sept:74, coursesMois:311, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Kouassi Hyacinthe', phone:'07 99 00 11', dateStart:'02/04/2025', lastCourse:1, totalCourses:293, hier:11, sept:69, coursesMois:293, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Aké Lambert',       phone:'05 88 77 66', dateStart:'03/04/2025', lastCourse:2, totalCourses:276, hier:10, sept:65, coursesMois:276, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Méa Franck',        phone:'01 55 44 33', dateStart:'04/04/2025', lastCourse:1, totalCourses:258, hier:9,  sept:61, coursesMois:258, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Loba Rodrigue',     phone:'07 22 33 44', dateStart:'05/04/2025', lastCourse:2, totalCourses:187, hier:7,  sept:48, coursesMois:187, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Gnagbo Arsène',     phone:'05 11 22 33', dateStart:'07/04/2025', lastCourse:1, totalCourses:163, hier:6,  sept:43, coursesMois:163, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Tra Bi Émile',      phone:'01 00 11 22', dateStart:'10/04/2025', lastCourse:4, totalCourses:94,  hier:0,  sept:13, coursesMois:94,  restMaintien:26, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'Inactif 4j' },
+      { name:'Gbagbo Eric',       phone:'07 44 55 66', dateStart:'01/04/2025', lastCourse:0, totalCourses:352, hier:14, sept:84, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Fofana Cheick',     phone:'05 33 22 11', dateStart:'01/04/2025', lastCourse:1, totalCourses:329, hier:12, sept:78, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Konaté Drissa',     phone:'01 77 88 99', dateStart:'01/04/2025', lastCourse:0, totalCourses:311, hier:12, sept:74, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Kouassi Hyacinthe', phone:'07 99 00 11', dateStart:'02/04/2025', lastCourse:1, totalCourses:293, hier:11, sept:69, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Aké Lambert',       phone:'05 88 77 66', dateStart:'03/04/2025', lastCourse:2, totalCourses:276, hier:10, sept:65, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Méa Franck',        phone:'01 55 44 33', dateStart:'04/04/2025', lastCourse:1, totalCourses:258, hier:9,  sept:61, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Loba Rodrigue',     phone:'07 22 33 44', dateStart:'05/04/2025', lastCourse:2, totalCourses:187, hier:7,  sept:48, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Gnagbo Arsène',     phone:'05 11 22 33', dateStart:'07/04/2025', lastCourse:1, totalCourses:163, hier:6,  sept:43, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Tra Bi Émile',      phone:'01 00 11 22', dateStart:'10/04/2025', lastCourse:4, totalCourses:94,  hier:0,  sept:13, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'Inactif 4j' },
     ]
   },
   {
-    // Total : 4×8500 + 2×4500 + 1×2000 = 34000+9000+2000 = ~54 000 F
     name: 'Scout Mariam',
     drivers: [
-      { name:'Kipré Wenceslas',   phone:'07 66 77 88', dateStart:'01/04/2025', lastCourse:1, totalCourses:334, hier:13, sept:80, coursesMois:334, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Séri Théodore',     phone:'05 55 44 33', dateStart:'01/04/2025', lastCourse:0, totalCourses:307, hier:12, sept:73, coursesMois:307, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Yoboué Ghislain',   phone:'01 44 33 22', dateStart:'02/04/2025', lastCourse:1, totalCourses:289, hier:11, sept:68, coursesMois:289, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Zadi Valentin',     phone:'07 33 22 11', dateStart:'03/04/2025', lastCourse:2, totalCourses:272, hier:10, sept:64, coursesMois:272, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Brou Hilaire',      phone:'05 22 11 00', dateStart:'05/04/2025', lastCourse:1, totalCourses:196, hier:7,  sept:50, coursesMois:196, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Djédjé Constant',   phone:'01 11 00 99', dateStart:'08/04/2025', lastCourse:2, totalCourses:131, hier:5,  sept:36, coursesMois:131, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Niamké Sylvain',    phone:'07 00 99 88', dateStart:'13/04/2025', lastCourse:1, totalCourses:78,  hier:3,  sept:21, coursesMois:78,  restMaintien:42, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'' },
+      { name:'Kipré Wenceslas',   phone:'07 66 77 88', dateStart:'01/04/2025', lastCourse:1, totalCourses:334, hier:13, sept:80, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Séri Théodore',     phone:'05 55 44 33', dateStart:'01/04/2025', lastCourse:0, totalCourses:307, hier:12, sept:73, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Yoboué Ghislain',   phone:'01 44 33 22', dateStart:'02/04/2025', lastCourse:1, totalCourses:289, hier:11, sept:68, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Zadi Valentin',     phone:'07 33 22 11', dateStart:'03/04/2025', lastCourse:2, totalCourses:272, hier:10, sept:64, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Brou Hilaire',      phone:'05 22 11 00', dateStart:'05/04/2025', lastCourse:1, totalCourses:196, hier:7,  sept:50, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Djédjé Constant',   phone:'01 11 00 99', dateStart:'08/04/2025', lastCourse:2, totalCourses:131, hier:5,  sept:36, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Niamké Sylvain',    phone:'07 00 99 88', dateStart:'13/04/2025', lastCourse:1, totalCourses:78,  hier:3,  sept:21, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
     ]
   },
   {
-    // Total : 5×8500 + 3×4500 = 42500+13500 = ~56 000 F
     name: 'Scout Jean-Marc',
     drivers: [
-      { name:'Akrou Pascal',      phone:'07 88 99 00', dateStart:'01/04/2025', lastCourse:0, totalCourses:346, hier:13, sept:83, coursesMois:346, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Kouamé Désiré',     phone:'05 77 88 99', dateStart:'01/04/2025', lastCourse:1, totalCourses:322, hier:12, sept:77, coursesMois:322, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Ahoua Martial',     phone:'01 66 77 88', dateStart:'02/04/2025', lastCourse:1, totalCourses:301, hier:11, sept:72, coursesMois:301, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Ettien Benoît',     phone:'07 55 66 77', dateStart:'03/04/2025', lastCourse:2, totalCourses:284, hier:10, sept:67, coursesMois:284, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Kra Narcisse',      phone:'05 44 55 66', dateStart:'04/04/2025', lastCourse:1, totalCourses:265, hier:10, sept:62, coursesMois:265, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Assouan Gilles',    phone:'01 33 44 55', dateStart:'05/04/2025', lastCourse:1, totalCourses:178, hier:7,  sept:46, coursesMois:178, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Lago Fernand',      phone:'07 22 33 44', dateStart:'07/04/2025', lastCourse:2, totalCourses:152, hier:6,  sept:41, coursesMois:152, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Adjoumani Cédric',  phone:'05 11 22 33', dateStart:'11/04/2025', lastCourse:1, totalCourses:122, hier:5,  sept:33, coursesMois:122, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
+      { name:'Akrou Pascal',      phone:'07 88 99 00', dateStart:'01/04/2025', lastCourse:0, totalCourses:346, hier:13, sept:83, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Kouamé Désiré',     phone:'05 77 88 99', dateStart:'01/04/2025', lastCourse:1, totalCourses:322, hier:12, sept:77, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Ahoua Martial',     phone:'01 66 77 88', dateStart:'02/04/2025', lastCourse:1, totalCourses:301, hier:11, sept:72, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Ettien Benoît',     phone:'07 55 66 77', dateStart:'03/04/2025', lastCourse:2, totalCourses:284, hier:10, sept:67, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Kra Narcisse',      phone:'05 44 55 66', dateStart:'04/04/2025', lastCourse:1, totalCourses:265, hier:10, sept:62, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Assouan Gilles',    phone:'01 33 44 55', dateStart:'05/04/2025', lastCourse:1, totalCourses:178, hier:7,  sept:46, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Lago Fernand',      phone:'07 22 33 44', dateStart:'07/04/2025', lastCourse:2, totalCourses:152, hier:6,  sept:41, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Adjoumani Cédric',  phone:'05 11 22 33', dateStart:'11/04/2025', lastCourse:1, totalCourses:122, hier:5,  sept:33, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
     ]
   },
   {
-    // Total : 7×8500 + 1×4500 + 1×2000 = 59500+4500+2000 = ~66 000 F
     name: 'Scout Fatoumata',
     drivers: [
-      { name:'Ouédraogo Lassina', phone:'07 99 00 11', dateStart:'01/04/2025', lastCourse:0, totalCourses:358, hier:14, sept:86, coursesMois:358, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'N\'Goran Alexis',   phone:'05 88 99 00', dateStart:'01/04/2025', lastCourse:1, totalCourses:336, hier:13, sept:80, coursesMois:336, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Diomandé Cheick',   phone:'01 77 88 99', dateStart:'01/04/2025', lastCourse:1, totalCourses:314, hier:12, sept:75, coursesMois:314, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Soro Karim',        phone:'07 66 77 88', dateStart:'02/04/2025', lastCourse:0, totalCourses:296, hier:11, sept:70, coursesMois:296, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Gueu Rodrigue',     phone:'05 55 66 77', dateStart:'03/04/2025', lastCourse:2, totalCourses:278, hier:10, sept:66, coursesMois:278, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Gbané Ismaël',      phone:'01 44 55 66', dateStart:'04/04/2025', lastCourse:1, totalCourses:261, hier:10, sept:62, coursesMois:261, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Camara Souleymane', phone:'07 33 44 55', dateStart:'05/04/2025', lastCourse:1, totalCourses:244, hier:9,  sept:58, coursesMois:244, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Koné Drissa',       phone:'05 22 33 44', dateStart:'06/04/2025', lastCourse:1, totalCourses:168, hier:6,  sept:44, coursesMois:168, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Bamba Lassina',     phone:'01 11 22 33', dateStart:'09/04/2025', lastCourse:5, totalCourses:87,  hier:0,  sept:10, coursesMois:87,  restMaintien:33, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'Inactif 5j' },
+      { name:'Ouédraogo Lassina', phone:'07 99 00 11', dateStart:'01/04/2025', lastCourse:0, totalCourses:358, hier:14, sept:86, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'N\'Goran Alexis',   phone:'05 88 99 00', dateStart:'01/04/2025', lastCourse:1, totalCourses:336, hier:13, sept:80, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Diomandé Cheick',   phone:'01 77 88 99', dateStart:'01/04/2025', lastCourse:1, totalCourses:314, hier:12, sept:75, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Soro Karim',        phone:'07 66 77 88', dateStart:'02/04/2025', lastCourse:0, totalCourses:296, hier:11, sept:70, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Gueu Rodrigue',     phone:'05 55 66 77', dateStart:'03/04/2025', lastCourse:2, totalCourses:278, hier:10, sept:66, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Gbané Ismaël',      phone:'01 44 55 66', dateStart:'04/04/2025', lastCourse:1, totalCourses:261, hier:10, sept:62, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Camara Souleymane', phone:'07 33 44 55', dateStart:'05/04/2025', lastCourse:1, totalCourses:244, hier:9,  sept:58, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Koné Drissa',       phone:'05 22 33 44', dateStart:'06/04/2025', lastCourse:1, totalCourses:168, hier:6,  sept:44, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Bamba Lassina',     phone:'01 11 22 33', dateStart:'09/04/2025', lastCourse:5, totalCourses:87,  hier:0,  sept:10, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'Inactif 5j' },
     ]
   },
   {
-    // Total : 10×8500 = 85 000 F
     name: 'Scout Mamadou',
     drivers: [
-      { name:'Yapi Serge',        phone:'07 11 22 33', dateStart:'01/04/2025', lastCourse:0, totalCourses:363, hier:14, sept:87, coursesMois:363, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Gnahoua Jérôme',    phone:'05 00 11 22', dateStart:'01/04/2025', lastCourse:1, totalCourses:344, hier:13, sept:82, coursesMois:344, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Touré Aboubakar',   phone:'01 99 00 11', dateStart:'01/04/2025', lastCourse:0, totalCourses:328, hier:12, sept:78, coursesMois:328, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Fané Soungalo',     phone:'07 88 99 00', dateStart:'02/04/2025', lastCourse:1, totalCourses:311, hier:12, sept:74, coursesMois:311, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
+      { name:'Yapi Serge',        phone:'07 11 22 33', dateStart:'01/04/2025', lastCourse:0, totalCourses:363, hier:14, sept:87, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Gnahoua Jérôme',    phone:'05 00 11 22', dateStart:'01/04/2025', lastCourse:1, totalCourses:344, hier:13, sept:82, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Touré Aboubakar',   phone:'01 99 00 11', dateStart:'01/04/2025', lastCourse:0, totalCourses:328, hier:12, sept:78, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Fané Soungalo',     phone:'07 88 99 00', dateStart:'02/04/2025', lastCourse:1, totalCourses:311, hier:12, sept:74, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
     ]
   },
   {
-    // Total : 4×8500 + 3×4500 + 1×2000 = 34000+13500+2000 = ~50 000 F
     name: 'Scout Ibrahima',
     drivers: [
-      { name:'Dago Casimir',      phone:'05 77 88 99', dateStart:'01/04/2025', lastCourse:1, totalCourses:338, hier:13, sept:81, coursesMois:338, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Oro Sylvestre',     phone:'01 66 77 88', dateStart:'01/04/2025', lastCourse:0, totalCourses:315, hier:12, sept:75, coursesMois:315, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Wahi Théophile',    phone:'07 55 66 77', dateStart:'02/04/2025', lastCourse:2, totalCourses:297, hier:11, sept:70, coursesMois:297, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Dali Hyppolite',    phone:'05 44 55 66', dateStart:'03/04/2025', lastCourse:1, totalCourses:279, hier:10, sept:66, coursesMois:279, restMaintien:0,  bActiv:1000, bS1:2500, bMaintien:1000, bBoost:4000, todo:'' },
-      { name:'Gogbé Ernest',      phone:'01 33 44 55', dateStart:'05/04/2025', lastCourse:1, totalCourses:192, hier:7,  sept:49, coursesMois:192, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Nanan Kouadio',     phone:'07 22 33 44', dateStart:'07/04/2025', lastCourse:2, totalCourses:157, hier:6,  sept:42, coursesMois:157, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Tia Célestin',      phone:'05 11 22 33', dateStart:'10/04/2025', lastCourse:1, totalCourses:134, hier:5,  sept:36, coursesMois:134, restMaintien:0,  bActiv:1000, bS1:0,    bMaintien:1000, bBoost:0,    todo:'' },
-      { name:'Eba Christian',     phone:'01 00 11 22', dateStart:'14/04/2025', lastCourse:2, totalCourses:83,  hier:3,  sept:23, coursesMois:83,  restMaintien:37, bActiv:1000, bS1:0,    bMaintien:0,    bBoost:0,    todo:'Relancer' },
+      { name:'Dago Casimir',      phone:'05 77 88 99', dateStart:'01/04/2025', lastCourse:1, totalCourses:338, hier:13, sept:81, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Oro Sylvestre',     phone:'01 66 77 88', dateStart:'01/04/2025', lastCourse:0, totalCourses:315, hier:12, sept:75, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Wahi Théophile',    phone:'07 55 66 77', dateStart:'02/04/2025', lastCourse:2, totalCourses:297, hier:11, sept:70, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Dali Hyppolite',    phone:'05 44 55 66', dateStart:'03/04/2025', lastCourse:1, totalCourses:279, hier:10, sept:66, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Gogbé Ernest',      phone:'01 33 44 55', dateStart:'05/04/2025', lastCourse:1, totalCourses:192, hier:7,  sept:49, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Nanan Kouadio',     phone:'07 22 33 44', dateStart:'07/04/2025', lastCourse:2, totalCourses:157, hier:6,  sept:42, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Tia Célestin',      phone:'05 11 22 33', dateStart:'10/04/2025', lastCourse:1, totalCourses:134, hier:5,  sept:36, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Eba Christian',     phone:'01 00 11 22', dateStart:'14/04/2025', lastCourse:2, totalCourses:83,  hier:3,  sept:23, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
     ]
+  },
+  {
+    name: 'Scout Salimata',
+    drivers: [
+      { name:'Kouamé Alphonse',   phone:'07 99 00 11', dateStart:'01/04/2025', lastCourse:0, totalCourses:371, hier:14, sept:89, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Bogui Landry',      phone:'05 88 99 00', dateStart:'01/04/2025', lastCourse:1, totalCourses:354, hier:13, sept:85, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Assoumou Patrick',  phone:'01 77 88 99', dateStart:'01/04/2025', lastCourse:0, totalCourses:339, hier:13, sept:81, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Ettien Benoît',     phone:'07 66 77 88', dateStart:'01/04/2025', lastCourse:1, totalCourses:324, hier:12, sept:77, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Kra Narcisse',      phone:'05 55 66 77', dateStart:'02/04/2025', lastCourse:1, totalCourses:308, hier:12, sept:73, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Assouan Gilles',    phone:'01 44 55 66', dateStart:'02/04/2025', lastCourse:0, totalCourses:293, hier:11, sept:69, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Lago Fernand',      phone:'07 33 44 55', dateStart:'03/04/2025', lastCourse:2, totalCourses:278, hier:10, sept:66, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Adjoumani Cédric',  phone:'05 22 33 44', dateStart:'03/04/2025', lastCourse:1, totalCourses:265, hier:10, sept:63, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Brou Hilaire',      phone:'01 11 22 33', dateStart:'04/04/2025', lastCourse:1, totalCourses:251, hier:9,  sept:60, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Ahoua Martial',     phone:'07 00 11 22', dateStart:'04/04/2025', lastCourse:0, totalCourses:238, hier:9,  sept:57, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Loba Rodrigue',     phone:'05 99 00 11', dateStart:'05/04/2025', lastCourse:2, totalCourses:221, hier:8,  sept:53, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Gnagbo Arsène',     phone:'01 88 99 00', dateStart:'05/04/2025', lastCourse:1, totalCourses:207, hier:8,  sept:50, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Tra Bi Émile',      phone:'07 77 88 99', dateStart:'06/04/2025', lastCourse:1, totalCourses:194, hier:7,  sept:47, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Séri Théodore',     phone:'05 66 77 88', dateStart:'07/04/2025', lastCourse:2, totalCourses:178, hier:7,  sept:45, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+    ]
+  },
+  {
+    name: 'Scout Patrick',
+    drivers: [
+      { name:'Zran Marcel',       phone:'01 55 66 77', dateStart:'01/04/2025', lastCourse:1, totalCourses:349, hier:13, sept:84, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Bah Oumar',         phone:'07 44 55 66', dateStart:'01/04/2025', lastCourse:0, totalCourses:327, hier:12, sept:78, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Oula Tiémoko',      phone:'05 33 44 55', dateStart:'02/04/2025', lastCourse:1, totalCourses:308, hier:12, sept:73, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Kouakou Mathieu',   phone:'01 22 33 44', dateStart:'03/04/2025', lastCourse:2, totalCourses:289, hier:11, sept:68, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Diby Hyacinthe',    phone:'07 11 22 33', dateStart:'04/04/2025', lastCourse:1, totalCourses:271, hier:10, sept:64, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Gbané Ismaël',      phone:'05 00 11 22', dateStart:'06/04/2025', lastCourse:1, totalCourses:163, hier:6,  sept:43, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Koné Drissa',       phone:'01 99 00 11', dateStart:'09/04/2025', lastCourse:3, totalCourses:127, hier:4,  sept:34, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Dago Casimir',      phone:'07 88 99 00', dateStart:'13/04/2025', lastCourse:1, totalCourses:96,  hier:4,  sept:26, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+    ]
+  },
+  {
+    name: 'Scout Kadiatou',
+    drivers: [
+      { name:'Méa Franck',        phone:'05 77 88 99', dateStart:'01/04/2025', lastCourse:0, totalCourses:357, hier:14, sept:85, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Ouattara Lacina',   phone:'01 66 77 88', dateStart:'01/04/2025', lastCourse:1, totalCourses:338, hier:13, sept:81, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Aké Lambert',       phone:'07 55 66 77', dateStart:'01/04/2025', lastCourse:1, totalCourses:321, hier:12, sept:77, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Yoboué Ghislain',   phone:'05 44 55 66', dateStart:'02/04/2025', lastCourse:0, totalCourses:304, hier:11, sept:72, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Gbagbo Eric',       phone:'01 33 44 55', dateStart:'03/04/2025', lastCourse:2, totalCourses:286, hier:11, sept:68, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Coulibaly Bakary',  phone:'07 22 33 44', dateStart:'03/04/2025', lastCourse:1, totalCourses:269, hier:10, sept:64, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Fofana Ousmane',    phone:'05 11 22 33', dateStart:'04/04/2025', lastCourse:1, totalCourses:253, hier:9,  sept:60, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Diallo Seydou',     phone:'01 00 11 22', dateStart:'04/04/2025', lastCourse:2, totalCourses:237, hier:9,  sept:56, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+      { name:'Traoré Lacina',     phone:'07 99 00 11', dateStart:'06/04/2025', lastCourse:1, totalCourses:174, hier:7,  sept:45, coursesMois:0, restMaintien:120, bActiv:1000, bS1:0, bMaintien:0, bBoost:0, todo:'' },
+    ]
+  },
+];
   },
   {
     // Total : 14×8500 = 119 000 F (meilleur agent)
