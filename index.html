@@ -264,6 +264,16 @@ const AGENT_PINS = {
   'V4': '1003',
   'V5': '1004',
   'V6': '1005',
+  'Scout Seydou':    '2001',
+  'Scout Aminata':   '2002',
+  'Scout Mariam':    '2003',
+  'Scout Jean-Marc': '2004',
+  'Scout Fatoumata': '2005',
+  'Scout Mamadou':   '2006',
+  'Scout Ibrahima':  '2007',
+  'Scout Salimata':  '2008',
+  'Scout Patrick':   '2009',
+  'Scout Kadiatou':  '2010',
 };
 // ───────────────────────────────────────────────────────────────────────
 
@@ -536,14 +546,21 @@ function renderHome() {
     </div>`;
   });
 
-  // Faux agents — clic direct
+  // Faux agents — avec PIN, nb chauffeurs fictifs
+  const DEMO_COUNTS = {
+    'Scout Seydou':47,'Scout Aminata':63,'Scout Mariam':51,'Scout Jean-Marc':58,
+    'Scout Fatoumata':72,'Scout Mamadou':34,'Scout Ibrahima':89,'Scout Salimata':121,
+    'Scout Patrick':66,'Scout Kadiatou':93
+  };
   DEMO_AGENTS.forEach((ag, i) => {
     const tot = getDemoTotal(ag);
-    html += `<div class="agent-card" onclick="showAgent('demo',${i})">
+    const cnt = DEMO_COUNTS[ag.name] || ag.drivers.length;
+    html += `<div class="agent-card" onclick="openPinScreen('${ag.name}')">
       <div class="agent-av">${getInitials(ag.name)}</div>
       <div class="agent-card-name">${ag.name}</div>
-      <div class="agent-card-total">${fmtF(tot)}</div>
-      <div class="agent-card-count">${ag.drivers.length} chauffeurs</div>
+      <div class="agent-card-total">— F</div>
+      <div class="agent-card-count">${cnt} chauffeurs</div>
+      <div class="lock-icon">🔒</div>
     </div>`;
   });
 
@@ -582,11 +599,67 @@ function renderHome() {
       </table>
     </div>
     <hr class="divider">
-    <div class="section-label">Comment démarrer ?</div>
-    <div class="card" style="font-size:14px;color:#555;line-height:2.1;">
-      1. Se connecter sur <strong style="color:#1a1a1a">Yango Pro</strong><br>
-      2. Vérifier que <strong style="color:#1847D1">Fleetch CI</strong> est le partenaire actif<br>
-      3. Faire la <strong style="color:#1a1a1a">première course</strong> pour activer les bonus
+    <div class="section-label">Comment enregistrer un chauffeur ?</div>
+    <div class="card" style="padding:14px 16px;">
+      <div style="display:flex;flex-direction:column;gap:14px;font-size:13px;color:#444;line-height:1.6;">
+
+        <div>
+          <div style="font-weight:700;color:#1847D1;margin-bottom:6px;">1. LA PRISE DE CONTACT</div>
+          <div style="color:#888;font-size:11px;margin-bottom:6px;">Établir une connexion rapide et cordiale.</div>
+          <div>• <strong>"Bonjour Chef !"</strong></div>
+          <div>• <strong>"Je suis [Votre Nom], commercial terrain pour Fleetch, le partenaire officiel Yango."</strong></div>
+          <div>• <strong>"Comment se passe la journée avec les clients jusqu'ici ?"</strong></div>
+        </div>
+
+        <div style="border-top:1px solid #F0F0F0;padding-top:12px;">
+          <div style="font-weight:700;color:#1847D1;margin-bottom:6px;">2. PRÉSENTATION DE L'OFFRE</div>
+          <div style="color:#888;font-size:11px;margin-bottom:6px;">Démontrer le gain d'argent immédiat.</div>
+          <div style="margin-bottom:6px;">📉 <strong>La Commission la plus basse</strong></div>
+          <div>• <em>"Tu es chez quel partenaire ? Ils te prennent 18%, soit 18 000 F sur 100 000 F gagnés."</em></div>
+          <div>• <em>"Avec Fleetch : 16,5% — tu gagnes <strong>1 500 F de plus</strong> par 100 000 F. Immédiatement."</em></div>
+          <div style="margin-top:8px;margin-bottom:6px;">💰 <strong>Bonus Bienvenue & Performance</strong></div>
+          <div>• Recharge 5 000 F → <strong>+2 000 F</strong> bonus</div>
+          <div>• Recharge 10 000 F → <strong>+4 000 F</strong> bonus</div>
+          <div>• 50–120 courses (1ère semaine) → <strong>+1 000 F</strong></div>
+          <div>• +120 courses (1ère semaine) → <strong>+3 000 F</strong></div>
+          <div style="margin-top:8px;">🏆 <em>"Dès 10 courses, tu intègres notre Club Exclusif pour gagner des cadeaux régulièrement."</em></div>
+        </div>
+
+        <div style="border-top:1px solid #F0F0F0;padding-top:12px;">
+          <div style="font-weight:700;color:#1847D1;margin-bottom:6px;">3. LE VERROUILLAGE</div>
+          <div>• <em>"Boss, tu restes sur Yango, rien ne change — sauf que ton portefeuille s'allège moins !"</em></div>
+          <div>• <em>"Fleetch est à tes côtés avec un service client ultra-réactif."</em></div>
+        </div>
+
+        <div style="border-top:1px solid #F0F0F0;padding-top:12px;">
+          <div style="font-weight:700;color:#1847D1;margin-bottom:6px;">4. ACCORD & CLÔTURE</div>
+          <div><em>"Je vais t'enregistrer très rapidement pour que tu deviennes FLEETCH dès maintenant. On y va ?"</em></div>
+        </div>
+
+        <div style="border-top:1px solid #F0F0F0;padding-top:12px;">
+          <div style="font-weight:700;color:#1847D1;margin-bottom:6px;">5. ENREGISTREMENT</div>
+          <div>• Documents : <strong>permis de conduire + carte grise</strong></div>
+          <div>• Renseigner plaque, coordonnées, photo claire.</div>
+          <div style="background:#FFF8E0;border:1px solid #FAC775;border-radius:6px;padding:8px 10px;margin-top:6px;font-size:12px;color:#854F0B;">
+            ⚠️ Renseigner impérativement le <strong>numéro WhatsApp</strong> du chauffeur dans la section numéro de téléphone.
+          </div>
+        </div>
+
+        <div style="border-top:1px solid #F0F0F0;padding-top:12px;">
+          <div style="font-weight:700;color:#1847D1;margin-bottom:8px;">6. ACTIVATION SUR YANGO PRO</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;"><span style="background:#1847D1;color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">1</span><span>Ouvrir Yango Pro</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;"><span style="background:#1847D1;color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">2</span><span>Paramètres → <strong>Déconnexion</strong></span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;"><span style="background:#1847D1;color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">3</span><span>Se reconnecter avec le <strong>numéro WhatsApp</strong> du chauffeur</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;"><span style="background:#1847D1;color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">4</span><span>Saisir le <strong>code reçu par WhatsApp</strong></span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;"><span style="background:#1847D1;color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">5</span><span>Vérification du permis (photo <strong>recto/verso</strong> bien nette)</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;"><span style="background:#1847D1;color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">6</span><span>Contrôle facial (visage bien au centre)</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;"><span style="background:#1847D1;color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">7</span><span>Sélectionner <strong>Fleetch</strong> dans la liste des partenaires</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-start;"><span style="background:#1847D1;color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">8</span><span>Terminer et <strong>procéder au rechargement</strong> pour activer les bonus</span></div>
+          </div>
+        </div>
+
+      </div>
     </div>`;
 
   document.getElementById('home-body').innerHTML = html;
