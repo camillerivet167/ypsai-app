@@ -485,10 +485,11 @@ function getRealTotal(name) {
 }
 
 // ── PIN system ─────────────────────────────────────────────────────────
-function openPinScreen(agentName) {
-  pinTarget = agentName;
+function openPinScreen(idx, type) {
+  const ag = type === 'real' ? realAgents[idx] : DEMO_AGENTS[idx];
+  pinTarget = { idx, type, name: ag.name };
   pinValue = '';
-  document.getElementById('pin-agent-name').textContent = agentName;
+  document.getElementById('pin-agent-name').textContent = ag.name;
   document.getElementById('pin-error').textContent = '';
   updateDots();
   document.getElementById('pin-screen').style.display = 'block';
@@ -517,11 +518,10 @@ function pinDel() {
   updateDots();
 }
 function checkPin() {
-  const correctPin = AGENT_PINS[pinTarget];
+  const correctPin = AGENT_PINS[pinTarget.name];
   if (pinValue === correctPin) {
     document.getElementById('pin-screen').style.display = 'none';
-    const idx = realAgents.findIndex(a => a.name === pinTarget);
-    showAgent('real', idx);
+    showAgent(pinTarget.type, pinTarget.idx);
   } else {
     document.getElementById('pin-error').textContent = 'Code incorrect, réessaie';
     pinValue = '';
@@ -535,9 +535,9 @@ function renderHome() {
   html += `<div class="section-label" style="margin-top:14px;">Choisir ton profil</div><div class="agent-grid">`;
 
   // Vrais agents — avec cadenas, clic ouvre le PIN
-  realAgents.forEach((ag) => {
+  realAgents.forEach((ag, i) => {
     const cnt = sheetData.filter(r => getCol(r,'AGENT').trim() === ag.name).length;
-    html += `<div class="agent-card" onclick="openPinScreen('${ag.name}')">
+    html += `<div class="agent-card" onclick="openPinScreen(${i}, 'real')">
       <div class="agent-av">${getInitials(ag.name)}</div>
       <div class="agent-card-name">${ag.name}</div>
       <div class="agent-card-total">— F</div>
@@ -555,7 +555,7 @@ function renderHome() {
   DEMO_AGENTS.forEach((ag, i) => {
     const tot = getDemoTotal(ag);
     const cnt = DEMO_COUNTS[ag.name] || ag.drivers.length;
-    html += `<div class="agent-card" onclick="openPinScreen('${ag.name}')">
+    html += `<div class="agent-card" onclick="openPinScreen(${i}, 'demo')">
       <div class="agent-av">${getInitials(ag.name)}</div>
       <div class="agent-card-name">${ag.name}</div>
       <div class="agent-card-total">— F</div>
